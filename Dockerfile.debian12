@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM amazonlinux:2
+FROM --platform=$TARGETPLATFORM debian:12
 
 ARG BUILD_ARCH=amd64
 ARG RUBY_VERSION=3.2.0
@@ -6,8 +6,7 @@ ARG ASSET_VERSION=local_build
 ARG GREP_EXCLUDE='(ld.so|ld-linux-x86-64.so|libBrokenLocale.so|libSegFault.so|libanl.so|libc.so|libdl.so|libm.so|libmvec.so|libnss_compat.so|libnss_dns.so|libnss_files.so|libpthread.so|libresolv.so|librt.so|libthread_db.so|libutil.so|vdso.so)'
 ARG RUBY_INSTALL_VERSION=0.8.5
 
-RUN yum update -y && yum groupinstall -y "Development Tools"
-RUN yum install -y curl openssl-devel libffi-devel readline-devel psych psych-devel libyaml-devel git git-core
+RUN apt-get update && apt-get install -y build-essential curl git
 
 RUN curl -L https://github.com/postmodern/ruby-install/archive/v${RUBY_INSTALL_VERSION}.tar.gz -o ruby-install-${RUBY_INSTALL_VERSION}.tar.gz && \
   tar -xzvf ruby-install-${RUBY_INSTALL_VERSION}.tar.gz && \
@@ -20,7 +19,7 @@ RUN LIBS=$(find /opt/rubies/ruby-${RUBY_VERSION} -type f -executable -exec ldd {
   for f in $LIBS; do if [ -e $f ]; then echo "Copying Library: $f" && cp $f /opt/rubies/ruby-${RUBY_VERSION}/lib/; fi; done
 
 RUN mkdir /assets/ && \
-  export SENSU_ASSET="/assets/sensu-ruby-runtime_${ASSET_VERSION}_ruby-${RUBY_VERSION}_amzn2_$(uname -s | tr '[:upper:]' '[:lower:]')_${BUILD_ARCH}.tar.gz" && \
+  export SENSU_ASSET="/assets/sensu-ruby-runtime_${ASSET_VERSION}_ruby-${RUBY_VERSION}_debian12_$(uname -s | tr '[:upper:]' '[:lower:]')_${BUILD_ARCH}.tar.gz" && \
   tar -czf $SENSU_ASSET -C /opt/rubies/ruby-${RUBY_VERSION}/ .
 
 ENV PATH=$PATH:/opt/rubies/ruby-${RUBY_VERSION}/bin
