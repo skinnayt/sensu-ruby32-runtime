@@ -14,7 +14,7 @@ ARG GREP_EXCLUDE='(ld.so|ld-linux-x86-64.so|libBrokenLocale.so|libSegFault.so|li
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 
 #RUN emerge --sync --quiet && emerge -v dev-libs/libyaml
-RUN emerge -v dev-libs/libyaml dev-vcs/git
+RUN emerge -v dev-libs/libyaml dev-vcs/git =sys-apps/baselayout-2.17
 
 RUN curl -L https://github.com/postmodern/ruby-install/archive/v${RUBY_INSTALL_VERSION}.tar.gz -o ruby-install-${RUBY_INSTALL_VERSION}.tar.gz && \
   tar -xzvf ruby-install-${RUBY_INSTALL_VERSION}.tar.gz && \
