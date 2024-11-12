@@ -126,6 +126,12 @@ build_filters = {
     "entity.system.os == 'linux'",
     "entity.system.platform_family == 'alpine'",
   ],
+  'alpine3.16': [
+    "entity.system.os == 'linux'",
+    "entity.system.platform_family == 'alpine'",
+    "parseInt(entity.system.platform_version.split('.')[0]) == 3",
+    "parseInt(entity.system.platform_version.split('.')[1]) == 16",
+  ],
   'almalinux9': [
     "entity.system.os == 'linux'",
     "entity.system.platform == 'almalinux'",
