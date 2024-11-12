@@ -47,6 +47,14 @@ for ARCH in ${ARCHES}; do
 
       echo docker run --platform linux/${ARCH} ${EMULARCH} -v "$PWD/dist:/dist" ${asset_image} cp /assets/${asset_filename} /dist/
       docker run --platform linux/${ARCH} ${EMULARCH} -v "$PWD/dist:/dist" ${asset_image} cp /assets/${asset_filename} /dist/
+
+      docker_asset=${REPO_SLUG}/${asset_image}
+
+      echo "Docker Hub Asset: ${docker_asset}"
+
+      docker tag ${asset_image} ${docker_asset}
+      docker push ${docker_asset}
+
     #    #rm $PWD/test/*
     #    #cp $PWD/dist/${asset_filename} $PWD/dist/${asset_filename}
     else
@@ -77,14 +85,14 @@ done
 #  exit 1
 #fi
 
-docker_asset=${REPO_SLUG}-${ruby_version}-${platform}:${asset_version}
+# docker_asset=${REPO_SLUG}-${ruby_version}-${platform}:${asset_version}
 
-echo "Docker Hub Asset: ${docker_asset}"
+# echo "Docker Hub Asset: ${docker_asset}"
 
 # echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 
-docker tag ${asset_image} ${docker_asset}
-docker push ${docker_asset}
+# docker tag ${asset_image} ${docker_asset}
+# docker push ${docker_asset}
 
 #ver=${asset_version%+*}
 #prefix=${ver%-*}
