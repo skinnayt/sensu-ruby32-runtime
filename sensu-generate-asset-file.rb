@@ -185,6 +185,7 @@ options = {
   plugin_name: '',
   plugin_namespace: '',
   plugin_version: '',
+  asset_name: '',
 
   json: false,
   yaml: false,
@@ -193,6 +194,10 @@ options = {
 OptionParser.new do |opt|
   opt.on('-n NAME', '--name NAME', 'Plugin Name') do |v|
     options[:plugin_name] = v
+  end
+
+  opt.on('-a ASSET_NAME', '--asset-name ASSET_NAME', 'Plugin name for asset') do |v|
+    options[:asset_name] = v
   end
 
   opt.on('-N NAMESPACE', '--namespace NAMESPACE', 'Plugin Namespace') do |v|
@@ -224,12 +229,16 @@ OptionParser.new do |opt|
   end
 end.parse!
 
+if options[:asset_name] == ''
+  options[:asset_name] = options[:plugin_name]
+end
+
 plugins = {}
 platform_arch = {}
 
 options[:platforms].each do |plat|
   unless platform_arch.key?(plat.to_sym)
-    platform_arch[plat.to_sym] = {}
+    platform_arch[plat.to_sym] = []
   end
 end
 
@@ -264,7 +273,7 @@ asset_def = {
   type: 'Asset',
   api_version: 'core/v2',
   metadata: {
-    name: "#{options[:plugin_namespace]}/#{options[:plugin_name]}",
+    name: "#{options[:plugin_namespace]}/#{options[:asset_name]}",
     namespace: 'default',
     annotations: {
       'io.sensu.bonsai.name': options[:plugin_name],
