@@ -1,5 +1,5 @@
 ---
-description: "sensu-ruby-runtime"
+description: "sensu-ruby32-runtime"
 builds:
 - platform: "alpine"
   arch: "amd64"
