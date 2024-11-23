@@ -280,7 +280,6 @@ asset_def = {
   api_version: 'core/v2',
   metadata: {
     name: "#{options[:plugin_namespace]}/#{options[:asset_name]}",
-    namespace: 'default',
     annotations: {
       'io.sensu.bonsai.name': options[:plugin_name],
       'io.sensu.bonsai.namespace': options[:plugin_namespace],
